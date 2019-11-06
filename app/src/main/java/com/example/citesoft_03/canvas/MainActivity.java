@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-    //    lista_circulo = new list_Circle(this);
-        lista_rectangulo = new list_Rectangle(this);
+        lista_circulo = new list_Circle(this);
+    //    lista_rectangulo = new list_Rectangle(this);
 
         creator_circles = (Button) findViewById(R.id.button_circle);
         creator_line = (Button) findViewById(R.id.button_line);
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         imagen = (LinearLayout) findViewById(R.id.img);
-     //   imagen.addView(lista_circulo);
-        imagen.addView(lista_rectangulo);
+       imagen.addView(lista_circulo);
+      //  imagen.addView(lista_rectangulo);
 
 
 
@@ -158,10 +158,10 @@ public class MainActivity extends AppCompatActivity {
             this.mis_rectangles.add(aux);
 
         }
-        public void deleteRectangle(){
+        public void deleteRectangle(int _selected){
 
             if(mis_rectangles.size()!=0){
-                mis_rectangles.remove(this.selected);
+                mis_rectangles.remove(_selected);
                 rectangle= -1;
             }
 
@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                     mis_rectangles.get(i).getPaint().setARGB(250, 255, 0, 0);
                     if(distancia<= mis_rectangles.get(i).getLado1() || distancia<= mis_rectangles.get(i).getLado2()){
                         rectangle =i;
+                        this.selected=i;
                         invalidate();
                     }
 
@@ -328,6 +329,7 @@ public class MainActivity extends AppCompatActivity {
                     mis_circulos.get(i).getPaint().setARGB(250, 255, 0, 0);
                     if(distancia<= mis_circulos.get(i).getRadio()){
                         circulo =i;
+                        this.selected=i;
                         invalidate();
                     }
 
@@ -354,7 +356,8 @@ public class MainActivity extends AppCompatActivity {
                     //double ceny = gety - y[circulo];
 
                     float distancia = (float) Math.sqrt(cenx * cenx + ceny * ceny);
-                    mis_circulos.get(circulo).setRadio(distancia);
+                    if(distancia>20)
+                        mis_circulos.get(circulo).setRadio(distancia);
                     //rad[circulo] = distancia;
                     invalidate();
                 }
