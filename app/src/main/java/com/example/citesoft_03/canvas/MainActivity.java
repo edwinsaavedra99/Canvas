@@ -29,30 +29,55 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout imagen;
     private  list_Circle lista_circulo;
     private list_Rectangle lista_rectangulo;
+    private list_Figura lista_figura;
+    private float introx;
+    private float introy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
-        lista_circulo = new list_Circle(this);
+      //  lista_circulo = new list_Circle(this);
     //    lista_rectangulo = new list_Rectangle(this);
-
+        lista_figura = new list_Figura(this);
         creator_circles = (Button) findViewById(R.id.button_circle);
         creator_line = (Button) findViewById(R.id.button_line);
         creator_rectangle = (Button) findViewById(R.id.button_rectangle);
         creator_circles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lista_circulo.addCircle(50,50,30);
-                lista_circulo.actualizar();
+                //point = true;
+                //lista_circulo.addCircle(50,50,30);
+                //lista_circulo.actualizar();
+               /* if(point ==true) {
+                    v.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            float X = event.getX();
+                            float Y = event.getY();
+                            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                lista_figura.addCirculo(X, Y, 30);
+                                    lista_figura.actualizar();
+                                    point = false;
+                            }
+
+                            return true;
+                        }
+                    });
+                }*/
+               //lista_figura.addCirculo(50,50,30);
+                lista_figura.addCirculo(introx,introy,30);
+               lista_figura.actualizar();
             }
         });
         creator_rectangle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lista_rectangulo.addRectangle(0,0,300, 500);
-                lista_rectangulo.actualizar();
+                //lista_rectangulo.addRectangle(0,0,300, 500);
+                //lista_rectangulo.actualizar();
+                lista_figura.addRectangulo(0,0,300,400);
+                lista_figura.actualizar();
             }
         });
 
@@ -60,17 +85,42 @@ public class MainActivity extends AppCompatActivity {
         delete_circles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lista_circulo.deleteCicle();
-                lista_circulo.actualizar();
+                //lista_circulo.deleteCicle();
+                //lista_circulo.actualizar();
+                lista_figura.deleteFigure();
+                lista_figura.actualizar();
             }
         });
 
         imagen = (LinearLayout) findViewById(R.id.img);
-       imagen.addView(lista_circulo);
+       //imagen.addView(lista_circulo);
       //  imagen.addView(lista_rectangulo);
+        imagen.addView(lista_figura);
 
 
+    }
+    @Override
+    public boolean  onTouchEvent(MotionEvent event){
+        introx =event.getX();
+        introy= event.getY();
+        int acci = event.getAction();
+        int eventaction = event.getAction();
 
+        switch (eventaction) {
+            case MotionEvent.ACTION_DOWN:
+                System.out.println("Se esta ejecutando");
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                break;
+
+            case MotionEvent.ACTION_UP:
+                //Toast.makeText(this, "ACTION_UP "+"X: "+X+" Y: "+Y, Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+
+        return true;
     }
     class Circle{
         private float x;
@@ -223,6 +273,128 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    class list_Figura extends View{
+        int selected;
+        private ArrayList<Figura> mis_figuras;
+        int figura = -1;
+        public list_Figura(Context context){
+            super(context);
+            mis_figuras = new ArrayList<Figura>();
+        }
+        public void addCirculo(float x,float y,float radio){
+            float[] intervals = new float[]{5.0f, 5.0f};
+            float phase = 0;
+            DashPathEffect dashPathEffect = new DashPathEffect(intervals, phase);
+            Paint pincela;
+            pincela= new Paint();
+            pincela.setAntiAlias(true   );
+            pincela.setARGB(250, 255, 0, 0);
+            pincela.setStrokeWidth(4);
+            pincela.setStyle(Paint.Style.STROKE);
+            pincela.setPathEffect(dashPathEffect);
+            Circulo aux = new Circulo(x,y,radio,pincela);
+            this.mis_figuras.add(aux);
+        }
+        public void addRectangulo(float x,float y,float lado1, float lado2){
+            float[] intervals = new float[]{5.0f, 5.0f};
+            float phase = 0;
+            DashPathEffect dashPathEffect = new DashPathEffect(intervals, phase);
+            Paint pincela;
+            pincela= new Paint();
+            pincela.setAntiAlias(true   );
+            pincela.setARGB(250, 255, 0, 0);
+            pincela.setStrokeWidth(4);
+            pincela.setStyle(Paint.Style.STROKE);
+            pincela.setPathEffect(dashPathEffect);
+            Rectangulo aux = new Rectangulo(x,y,lado1,lado2,pincela);
+            this.mis_figuras.add(aux);
+
+        }
+        public void addLinea(){
+
+        }
+        public void deleteFigure(){
+            if (mis_figuras.size()!=0){
+                mis_figuras.remove(this.selected);
+                figura= -1;
+            }
+        }
+        protected void onDraw(Canvas canvas){
+            for(int i =0; i< mis_figuras.size();i++ ){
+
+                if(mis_figuras.get(i) instanceof Circulo){
+                    Circulo temp = (Circulo) mis_figuras.get(i);
+                    canvas.drawCircle(temp.getX(),temp.getY(),temp.getRadio(),temp.getPaint());
+                }else if(mis_figuras.get(i) instanceof Rectangulo){
+                    Rectangulo temp = (Rectangulo) mis_figuras.get(i);
+                    canvas.drawRect(temp.getX(),temp.getY(),temp.getAncho(),temp.getLargo(),temp.getPaint());
+                }else if(mis_figuras.get(i) instanceof Linea){
+                    Linea temp = (Linea) mis_figuras.get(i);
+                    //add canvas
+                }else{
+                    System.out.println("TIPO NO RECONOCIDO");
+                }
+
+
+            }
+        }
+        public void actualizar(){
+            invalidate();
+        }
+        public boolean onTouchEvent(MotionEvent event){
+            float getx =event.getX();
+            float gety= event.getY();
+            int acci = event.getAction();
+
+         /*   if(acci == MotionEvent.ACTION_DOWN){
+                for(int i =0; i<mis_circulos.size();i++){
+                    double cenx = getx-mis_circulos.get(i).getX();
+                    double ceny =  gety-mis_circulos.get(i).getY();
+
+                    float distancia =   (float) Math.sqrt(cenx*cenx + ceny*ceny);
+                    mis_circulos.get(i).getPaint().setARGB(250, 255, 0, 0);
+                    if(distancia<= mis_circulos.get(i).getRadio()){
+                        circulo =i;
+                        this.selected=i;
+                        invalidate();
+                    }
+
+
+                }
+
+                if(circulo >-1){
+                    this.selected = circulo;
+                    mis_circulos.get(circulo).getPaint().setARGB(255, 0, 255, 0);
+                    mis_circulos.get(circulo).setX(getx);
+                    mis_circulos.get(circulo).setY(gety);
+                    //x[circulo] = getx;
+                    //y[circulo] = gety;
+
+                    invalidate();
+                }
+            }*/
+
+            /*if (acci == MotionEvent.ACTION_MOVE){
+                if(circulo >-1) {
+                    double cenx = getx-mis_circulos.get(circulo).getX();
+                    double ceny =  gety-mis_circulos.get(circulo).getY();
+                    // double cenx = getx - x[circulo];
+                    //double ceny = gety - y[circulo];
+
+                    float distancia = (float) Math.sqrt(cenx * cenx + ceny * ceny);
+                    if(distancia>20)
+                        mis_circulos.get(circulo).setRadio(distancia);
+                    //rad[circulo] = distancia;
+                    invalidate();
+                }
+            }*/
+
+            return true;
+
+        }
+    }
+
+
 
 
     class list_Circle extends View {
@@ -315,6 +487,7 @@ public class MainActivity extends AppCompatActivity {
             invalidate();
         }
 
+
         public boolean onTouchEvent(MotionEvent event){
             float getx =event.getX();
             float gety= event.getY();
@@ -332,8 +505,6 @@ public class MainActivity extends AppCompatActivity {
                         this.selected=i;
                         invalidate();
                     }
-
-
                 }
 
                 if(circulo >-1){
