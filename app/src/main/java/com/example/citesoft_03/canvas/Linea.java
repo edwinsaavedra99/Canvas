@@ -3,8 +3,35 @@ package com.example.citesoft_03.canvas;
 import android.graphics.Paint;
 
 public class Linea extends Figura {
-    public Linea(float _x , float _y, Paint _paint){
+    private float finX;
+    private float finY;
+    public Linea(float _x , float _y, float finx,float finy,Paint _paint){
         super(_x,_y,_paint);
+        this.finX = finx;
+        this.finY = finy;
 
     }
+    public void setFinX(float x ){
+        this.finX =x;
+    }
+    public float getFinX() {
+        return finX;
+    }
+    public void setFinY(float y) {
+        this.finY = y;
+    }
+    public float getFinY() {
+        return finY;
+    }
+
+    public float distancia(float getx, float gety){
+
+        float m = (finY-y)/(finX-x);
+        float A = m;
+        float B= -1;
+        float C = -m*x+y;
+        double distancia = Math.abs(A*getx+B*gety+C)/Math.sqrt(A*A+B*B);
+        return (float) distancia;
+    }
+
 }

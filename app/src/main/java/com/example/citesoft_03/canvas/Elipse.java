@@ -2,10 +2,10 @@ package com.example.citesoft_03.canvas;
 
 import android.graphics.Paint;
 
-public class Rectangulo extends Figura{
+public class Elipse extends Figura{
     private float x1;
     private float y1;
-    public Rectangulo(float _x, float _y, float _x1, float _y1 , Paint _paint){
+    public Elipse(float _x, float _y, float _x1, float _y1 , Paint _paint){
         super(_x,_y,_paint);
         this.x1 = _x1;
         this.y1 = _y1;
