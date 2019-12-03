@@ -1,6 +1,5 @@
 package com.example.citesoft_03.canvas;
 
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
@@ -14,8 +13,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+//LIMITES
+//ARREGLAR CAMBIO DE SELECCION
+//PUNTEROS
+//
 
 public class MainActivity extends AppCompatActivity {
     private float xBegin;
@@ -25,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private Button delete_circles;
     private Button creator_line;
     private Button creator_rectangle;
+    private Button paleta_blue;
+    private Button paleta_green;
+    private Button paleta_red;
+    private Button paleta_celeste;
     private LinearLayout imagen;
     private list_Figura lista_figura;
     private float introx;
@@ -39,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
         creator_line = (Button) findViewById(R.id.button_line);
         creator_rectangle = (Button) findViewById(R.id.button_rectangle);
         delete_circles = (Button) findViewById(R.id.button_delete);
+        paleta_blue = (Button) findViewById(R.id.paleta_blue);
+        paleta_green = (Button) findViewById(R.id.paleta_green);
+        paleta_red = (Button) findViewById(R.id.paleta_red);
+        paleta_celeste = (Button) findViewById(R.id.paleta_celeste);
         creator_circles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +75,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        paleta_blue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //codigo de color azul
+                lista_figura.cambiarColor(255,0,0,255);
+                lista_figura.actualizar();
+            }
+        });
+
+        paleta_green.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //codigo de color verde
+                lista_figura.cambiarColor(255,0,255,0);
+                lista_figura.actualizar();
+            }
+        });
+
+        paleta_red.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //codigo de color rojo
+                lista_figura.cambiarColor(255,255,0,0);
+                lista_figura.actualizar();
+            }
+        });
+
+        paleta_celeste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //codigo de color celeste
+                lista_figura.cambiarColor(255,0,255,255);
+                lista_figura.actualizar();
+            }
+        });
+
         delete_circles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 lista_figura.actualizar();
             }
         });
+
         imagen = (LinearLayout) findViewById(R.id.img);
         imagen.addView(lista_figura);
     }
@@ -145,9 +195,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void deleteFigure() {
-            if (mis_figuras.size() != 0 && this.selected != -1) {
+            if (mis_figuras.size() != 0 && this.selected != -1 ) {
                 mis_figuras.remove(this.selected);
                 figura = -1;
+            }
+        }
+        public void cambiarColor(int _a,int _r, int _g, int _b) {
+            if (mis_figuras.size() != 0 && this.selected != -1) {
+                mis_figuras.get(this.selected).getPaint().setARGB(_a,_r,_g,_b);
+                invalidate();
             }
         }
 
@@ -185,14 +241,13 @@ public class MainActivity extends AppCompatActivity {
             int acci = event.getAction();
             if (acci == MotionEvent.ACTION_DOWN) {
                 for (int i = 0; i < mis_figuras.size(); i++) {
-                    mis_figuras.get(i).getPaint().setARGB(250, 255, 0, 0);
+                    mis_figuras.get(i).getPaint().setStrokeWidth(4);
                     if (mis_figuras.get(i) instanceof Circulo) {
                         Circulo temp = (Circulo) mis_figuras.get(i);
                         double cenx = getx - mis_figuras.get(i).getX();
                         double ceny = gety - mis_figuras.get(i).getY();
                         float distancia = (float) Math.sqrt(cenx * cenx + ceny * ceny);
                         if (distancia <= temp.getRadio()) {
-                            System.out.println("entro en condicional de circulo");
                             figura = i;
                             this.selected = i;
                             invalidate();
@@ -200,7 +255,6 @@ public class MainActivity extends AppCompatActivity {
                     } else if (mis_figuras.get(i) instanceof Rectangulo) {
                         Rectangulo temp = (Rectangulo) mis_figuras.get(i);
                         if (getx <= temp.getX1() && getx >= temp.getX() && gety >= temp.getY() && gety <= temp.getY1()) {
-                            System.out.println("entro en condicional de rectangulo");
                             figura = i;
                             this.selected = i;
                             invalidate();
@@ -239,12 +293,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (figura > -1) {
                         this.selected = figura;
-                        mis_figuras.get(figura).getPaint().setARGB(255, 0, 255, 0);
-                        invalidate();
-                    } else {
-                        for (int t = 0; t < mis_figuras.size(); t++) {
-                            mis_figuras.get(t).getPaint().setARGB(250, 255, 0, 0);
-                        }
+                       mis_figuras.get(figura).getPaint().setStrokeWidth(9);
                     }
                 }
             }
@@ -370,4 +419,27 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+/*
+    public void readJson() {
+        String jsonString = IOHelper.stringFromAsset(this, "circles.json");
+        try {
+            //JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray circulos_saved = new JSONArray(jsonString);
+
+            String result = "";
+            for (int i = 0; i < circulos_saved.length(); i++) {
+                JSONObject circ = circulos_saved.getJSONObject(i);
+                //new Gson().fromJson(city.toString(), City.class);
+
+                this.lista_figura.addCircle(circ.getLong("x"),circ.getLong("y"),circ.getLong("radio"));
+            }
+            this.lista_figura.actualizar();
+        } catch (Exception e) {
+            System.out.print("dooooo");
+        }
+    }
+*/
+    public void writeJson() {
+        IOHelper.writeToFile(this, "circleJsonObj.txt", this.lista_figura.toString());
+    }
 }

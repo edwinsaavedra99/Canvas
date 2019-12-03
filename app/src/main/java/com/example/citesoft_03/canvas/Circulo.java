@@ -15,4 +15,11 @@ public class Circulo extends Figura{
     public float getRadio(){
         return this.radio;
     }
+    @Override
+    public String toString(){
+        return "{\n \"radio\": "+this.radio+",\n" +
+                "   \"name\": c,\n"+
+                "   \"x\": "+this.x+",\n"+
+                "    \"y\": "+this.y+"\n }";
+    }
 }

@@ -1,16 +1,21 @@
 package com.example.citesoft_03.canvas;
 
+import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class Linea extends Figura {
     private float finX;
     private float finY;
+
     public Linea(float _x , float _y, float finx,float finy,Paint _paint){
         super(_x,_y,_paint);
         this.finX = finx;
         this.finY = finy;
 
     }
+   /* protected void onDraw(Canvas canvas) {
+        drawable.draw(canvas);
+    }*/
     public void setFinX(float x ){
         this.finX =x;
     }

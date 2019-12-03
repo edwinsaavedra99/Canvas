@@ -1,11 +1,18 @@
 package com.example.citesoft_03.canvas;
 
+import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.view.View;
 
 public abstract class Figura {
     protected float x;
     protected  float y;
     protected Paint paint;
+ //   protected ShapeDrawable drawable;
+
     public Figura(float _x , float _y, Paint _paint){
         this.x = _x;
         this.y = _y;
