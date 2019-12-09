@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         load_1 =(Button) findViewById(R.id.button_load);
         archivo = "miarchivo";
         carpeta = "/carpeta/";
-
+//this
         crear_archivo_json();
 
 
