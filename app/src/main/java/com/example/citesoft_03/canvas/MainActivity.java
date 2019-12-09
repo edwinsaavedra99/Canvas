@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         paleta_green = (Button) findViewById(R.id.paleta_green);
         paleta_red = (Button) findViewById(R.id.paleta_red);
         paleta_celeste = (Button) findViewById(R.id.paleta_celeste);
+
         creator_circles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
