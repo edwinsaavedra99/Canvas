@@ -1,14 +1,13 @@
 package com.example.citesoft_03.canvas;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class Linea extends Figura {
     private float finX;
     private float finY;
 
-    public Linea(float _x , float _y, float finx,float finy,Paint _paint){
-        super(_x,_y,_paint);
+    public Linea(float _x , float _y, float finx,float finy,Paint _paint,int color[]){
+        super(_x,_y,_paint,color);
         this.finX = finx;
         this.finY = finy;
 
@@ -37,6 +36,9 @@ public class Linea extends Figura {
         float C = -m*x+y;
         double distancia = Math.abs(A*getx+B*gety+C)/Math.sqrt(A*A+B*B);
         return (float) distancia;
+    }
+    public String toString(){
+        return "{\"id\":3,\"x\"="+this.getX()+",\"y\"="+this.getY()+",\"finX\"="+this.finX+",\"finY\"="+this.getFinY()+"}";
     }
 
 }

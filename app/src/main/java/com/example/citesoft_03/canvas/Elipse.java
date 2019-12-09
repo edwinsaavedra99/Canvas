@@ -2,11 +2,11 @@ package com.example.citesoft_03.canvas;
 
 import android.graphics.Paint;
 
-public class Elipse extends Figura{
+public class Elipse extends Figura {
     private float x1;
     private float y1;
-    public Elipse(float _x, float _y, float _x1, float _y1 , Paint _paint){
-        super(_x,_y,_paint);
+    public Elipse(float _x, float _y, float _x1, float _y1 , Paint _paint,int color[]){
+        super(_x,_y,_paint,color);
         this.x1 = _x1;
         this.y1 = _y1;
     }
@@ -21,5 +21,8 @@ public class Elipse extends Figura{
     }
     public float getY1(){
         return y1;
+    }
+    public String toString(){
+        return "{\"id\":2,\"x\"="+this.getX()+",\"y\"="+this.getY()+",\"x1\"="+this.getX1()+",\"y1\"="+this.getY1()+"}";
     }
 }

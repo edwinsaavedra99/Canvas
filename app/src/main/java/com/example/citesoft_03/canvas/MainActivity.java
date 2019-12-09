@@ -5,17 +5,18 @@ import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 //LIMITES
 //ARREGLAR CAMBIO DE SELECCION
@@ -23,8 +24,12 @@ import java.util.ArrayList;
 //
 
 public class MainActivity extends AppCompatActivity {
+
     private float xBegin;
     private float yBeging;
+    String archivo;
+    String carpeta;
+    File file;
     private TextView value_y;
     private Button creator_circles;
     private Button delete_circles;
@@ -34,15 +39,17 @@ public class MainActivity extends AppCompatActivity {
     private Button paleta_green;
     private Button paleta_red;
     private Button paleta_celeste;
+    private Button save_1;
+    private Button load_1;
+
     private LinearLayout imagen;
     private list_Figura lista_figura;
-    private float introx;
-    private float introy;
-
+    private int color[]={183,149,11};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         lista_figura = new list_Figura(this);
         creator_circles = (Button) findViewById(R.id.button_circle);
         creator_line = (Button) findViewById(R.id.button_line);
@@ -52,12 +59,19 @@ public class MainActivity extends AppCompatActivity {
         paleta_green = (Button) findViewById(R.id.paleta_green);
         paleta_red = (Button) findViewById(R.id.paleta_red);
         paleta_celeste = (Button) findViewById(R.id.paleta_celeste);
+        save_1 = (Button) findViewById(R.id.button_save);
+        load_1 =(Button) findViewById(R.id.button_load);
+        archivo = "miarchivo";
+        carpeta = "/carpeta/";
+
+        crear_archivo_json();
+
+
 
         creator_circles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // lista_figura.addCirculo(50, 60, 60);
-                lista_figura.addElipse(0,100,400,300);
+                lista_figura.addCirculo(100,100,100);
                 lista_figura.actualizar();
             }
         });
@@ -76,11 +90,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+//botones de carga para todo :) puede haber error
+        save_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //codigo de color azul
+                escribir_archivo_json();
+
+            }
+        });
+        load_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //codigo de color azul
+
+            }
+        });
+
+
+
+
         paleta_blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //codigo de color azul
-                lista_figura.cambiarColor(255,0,0,255);
+                color=Util.color2;
+                lista_figura.cambiarColor();
                 lista_figura.actualizar();
             }
         });
@@ -89,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //codigo de color verde
-                lista_figura.cambiarColor(255,0,255,0);
+                color=Util.color3;
+                lista_figura.cambiarColor();
                 lista_figura.actualizar();
             }
         });
@@ -98,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //codigo de color rojo
-                lista_figura.cambiarColor(255,255,0,0);
+                color=Util.color4;
+                lista_figura.cambiarColor();
                 lista_figura.actualizar();
             }
         });
@@ -107,10 +144,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //codigo de color celeste
-                lista_figura.cambiarColor(255,0,255,255);
+                color=Util.color7;
+                lista_figura.cambiarColor();
                 lista_figura.actualizar();
             }
         });
+
+
 
         delete_circles.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
                 lista_figura.actualizar();
             }
         });
+
+
 
         imagen = (LinearLayout) findViewById(R.id.img);
         imagen.addView(lista_figura);
@@ -135,63 +177,63 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void addCirculo(float x, float y, float radio) {
-            float[] intervals = new float[]{5.0f, 5.0f};
+            float[] intervals = new float[]{0.0f, 0.0f};
             float phase = 0;
             DashPathEffect dashPathEffect = new DashPathEffect(intervals, phase);
             Paint pincela;
             pincela = new Paint();
             pincela.setAntiAlias(true);
-            pincela.setARGB(250, 255, 0, 0);
+            pincela.setARGB(250, color[0],color[1],color[2]);
             pincela.setStrokeWidth(4);
             pincela.setStyle(Paint.Style.STROKE);
             pincela.setPathEffect(dashPathEffect);
-            Circulo aux = new Circulo(x, y, radio, pincela);
+            Circulo aux = new Circulo(x, y, radio, pincela,color);
             this.mis_figuras.add(aux);
         }
 
         public void addRectangulo(float x, float y, float lado1, float lado2) {
-            float[] intervals = new float[]{5.0f, 5.0f};
+            float[] intervals = new float[]{0.0f, 0.0f};
             float phase = 0;
             DashPathEffect dashPathEffect = new DashPathEffect(intervals, phase);
             Paint pincela;
             pincela = new Paint();
             pincela.setAntiAlias(true);
-            pincela.setARGB(250, 255, 0, 0);
+            pincela.setARGB(250, color[0],color[1],color[2]);
             pincela.setStrokeWidth(4);
             pincela.setStyle(Paint.Style.STROKE);
             pincela.setPathEffect(dashPathEffect);
-            Rectangulo aux = new Rectangulo(x, y, lado1, lado2, pincela);
+            Rectangulo aux = new Rectangulo(x, y, lado1, lado2, pincela,color);
             this.mis_figuras.add(aux);
 
         }
 
         public void addElipse(float x, float y, float x1, float y1) {
-            float[] intervals = new float[]{5.0f, 5.0f};
+            float[] intervals = new float[]{0.0f, 0.0f};
             float phase = 0;
             DashPathEffect dashPathEffect = new DashPathEffect(intervals, phase);
             Paint pincela;
             pincela = new Paint();
             pincela.setAntiAlias(true);
-            pincela.setARGB(250, 255, 0, 0);
+            pincela.setARGB(250, color[0],color[1],color[2]);
             pincela.setStrokeWidth(4);
             pincela.setStyle(Paint.Style.STROKE);
             pincela.setPathEffect(dashPathEffect);
-            Elipse aux = new Elipse(x, y, x1, y1, pincela);
+            Elipse aux = new Elipse(x, y, x1, y1, pincela,color);
             this.mis_figuras.add(aux);
         }
 
         public void addLinea(float x, float y, float x1, float y1) {
-            float[] intervals = new float[]{5.0f, 5.0f};
+            float[] intervals = new float[]{0.0f, 0.0f};
             float phase = 0;
             DashPathEffect dashPathEffect = new DashPathEffect(intervals, phase);
             Paint pincela;
             pincela = new Paint();
             pincela.setAntiAlias(true);
-            pincela.setARGB(250, 255, 0, 0);
+            pincela.setARGB(250, color[0],color[1],color[2]);
             pincela.setStrokeWidth(4);
             pincela.setStyle(Paint.Style.STROKE);
             pincela.setPathEffect(dashPathEffect);
-            Linea aux = new Linea(x, y, x1, y1, pincela);
+            Linea aux = new Linea(x, y, x1, y1, pincela,color);
             this.mis_figuras.add(aux);
         }
 
@@ -201,34 +243,82 @@ public class MainActivity extends AppCompatActivity {
                 figura = -1;
             }
         }
-        public void cambiarColor(int _a,int _r, int _g, int _b) {
+        public void cambiarColor() {
             if (mis_figuras.size() != 0 && this.selected != -1) {
-                mis_figuras.get(this.selected).getPaint().setARGB(_a,_r,_g,_b);
+                mis_figuras.get(this.selected).setColor(color);
+                mis_figuras.get(this.selected).getPaint().setARGB(255,color[0],color[1],color[2]);
                 invalidate();
             }
+        }
+        public String toString(){
+            String list_json = "[\n";
+            for(int i=0;i<this.mis_figuras.size();i++){
+                list_json = list_json+mis_figuras.get(i).toString()+"\n";
+                if(i<this.mis_figuras.size()-1){
+                    list_json = list_json+",";
+                }
+            }
+
+            return list_json+"]";
+        }
+        public void clear_list(){
+            this.mis_figuras.clear();
         }
 
         protected void onDraw(Canvas canvas) {
             for (int i = 0; i < mis_figuras.size(); i++) {
-
                 if (mis_figuras.get(i) instanceof Circulo) {
                     Circulo temp = (Circulo) mis_figuras.get(i);
                     canvas.drawCircle(temp.getX(), temp.getY(), temp.getRadio(), temp.getPaint());
+                    canvas.drawCircle(temp.getX()+temp.getRadio(), temp.getY(), 10, Util.Circle_Small(temp.getColor()));
+                    if(i==figura){
+                        canvas.drawCircle(temp.getX()+temp.getRadio(), temp.getY(), 30, Util.Circle_Transparente(temp.getColor()));
+                    }
+
                 } else if (mis_figuras.get(i) instanceof Rectangulo) {
                     Rectangulo temp = (Rectangulo) mis_figuras.get(i);
                     canvas.drawRect(temp.getX(), temp.getY(), temp.getX1(), temp.getY1(), temp.getPaint());
+
+                    canvas.drawCircle(temp.getX(), temp.getY(), 10,  Util.Circle_Small(temp.getColor()));
+                    canvas.drawCircle(temp.getX1(), temp.getY1(), 10,  Util.Circle_Small(temp.getColor()));
+
+
+                    if(i==figura){
+                        canvas.drawCircle(temp.getX(), temp.getY(), 30, Util.Circle_Transparente(temp.getColor()));
+                        canvas.drawCircle(temp.getX1(), temp.getY1(), 30, Util.Circle_Transparente(temp.getColor()));
+                    }
+
+
                 } else if (mis_figuras.get(i) instanceof Linea) {
                     Linea temp = (Linea) mis_figuras.get(i);
                     canvas.drawLine(temp.getX(), temp.getY(), temp.getFinX(), temp.getFinY(), temp.getPaint());
+
+                    canvas.drawCircle(temp.getX(), temp.getY(), 10,  Util.Circle_Small(temp.getColor()));
+                    canvas.drawCircle(temp.getFinX(), temp.getFinY(), 10,  Util.Circle_Small(temp.getColor()));
+
+
+                    if(i==figura){
+                        canvas.drawCircle(temp.getX(), temp.getY(), 30, Util.Circle_Transparente(temp.getColor()));
+                        canvas.drawCircle(temp.getFinX(), temp.getFinY(), 30, Util.Circle_Transparente(temp.getColor()));
+                    }
+
+
                 } else if (mis_figuras.get(i) instanceof Elipse) {
                     Elipse temp = (Elipse) mis_figuras.get(i);
                     RectF rectangulo1 = new RectF(temp.getX(), temp.getY(), temp.getX1(), temp.getY1());
-                    canvas.drawOval(rectangulo1, temp.getPaint());
+                    canvas.drawOval (rectangulo1, temp.getPaint());
+
+                    canvas.drawCircle(temp.getX(), temp.getY(), 10, Util.Circle_Small(temp.getColor()));
+                    canvas.drawCircle(temp.getX1(), temp.getY1(), 10, Util.Circle_Small(temp.getColor()));
+
+
+                    if(i==figura){
+                        canvas.drawCircle(temp.getX(), temp.getY(), 30, Util.Circle_Transparente(temp.getColor()));
+                        canvas.drawCircle(temp.getX1(), temp.getY1(), 30, Util.Circle_Transparente(temp.getColor()));
+                    }
                 } else {
                     System.out.println("Esperando Tipos");
                 }
-
-
             }
         }
 
@@ -236,13 +326,18 @@ public class MainActivity extends AppCompatActivity {
             invalidate();
         }
 
+        float getx_pasado = 0;
+        float gety_pasado = 0;
         public boolean onTouchEvent(MotionEvent event) {
             float getx = event.getX();
             float gety = event.getY();
+
             int acci = event.getAction();
             if (acci == MotionEvent.ACTION_DOWN) {
+                getx_pasado=getx;
+                gety_pasado=gety;
                 for (int i = 0; i < mis_figuras.size(); i++) {
-                    mis_figuras.get(i).getPaint().setStrokeWidth(4);
+                    //mis_figuras.get(i).getPaint().setStrokeWidth(4);
                     if (mis_figuras.get(i) instanceof Circulo) {
                         Circulo temp = (Circulo) mis_figuras.get(i);
                         double cenx = getx - mis_figuras.get(i).getX();
@@ -261,24 +356,8 @@ public class MainActivity extends AppCompatActivity {
                             invalidate();
                         }
                     } else if (mis_figuras.get(i) instanceof Linea) {
-                        //Canvas sd = new Canvas();
                         Linea temp = (Linea) mis_figuras.get(i);
-                        //sd.drawCircle(50,50,40,temp.getPaint());
-                        // mis_figuras.add(new Circulo(temp.getX(),temp.getY(),40,temp.getPaint()));
-                        double cenx = getx - temp.getX();
-                        double ceny = gety - temp.getY();
-                        float mx = (temp.getX() + temp.getFinX()) / 2;
-                        float my = (temp.getY() + temp.getFinY()) / 2;
-                        double cx = getx - mx;
-                        double cy = gety - my;
-                        float distancia2 = (float) Math.sqrt(cx * cx + cy * cy);
-                        float distancia = (float) Math.sqrt(cenx * cenx + ceny * ceny);
-                        double cenx1 = getx - temp.getFinX();
-                        double ceny1 = gety - temp.getFinY();
-                        float distancia1 = (float) Math.sqrt(cenx1 * cenx1 + ceny1 * ceny1);
                         if (temp.distancia(getx, gety) <= 20) {
-                            //if(distancia2<=30){
-                            //dibujar punto de accion
                             figura = i;
                             this.selected = i;
                             invalidate();
@@ -294,21 +373,26 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (figura > -1) {
                         this.selected = figura;
-                       mis_figuras.get(figura).getPaint().setStrokeWidth(9);
+                        //mis_figuras.get(figura).getPaint().setStrokeWidth(9);
                     }
                 }
             }
                 if (acci == MotionEvent.ACTION_MOVE) {
                     if (figura > -1) {
                         if (mis_figuras.get(figura) instanceof Circulo) {
-                            double cenx = getx - mis_figuras.get(figura).getX();
-                            double ceny = gety - mis_figuras.get(figura).getY();
+                            Circulo temp=(Circulo)mis_figuras.get(figura);
+                            float cenx = getx - (temp.getX()+temp.getRadio());
+                            float ceny = gety - temp.getY();
                             float distancia = (float) Math.sqrt(cenx * cenx + ceny * ceny);
-                            Circulo aux = (Circulo) mis_figuras.get(figura);
-                            mis_figuras.get(figura).setX(getx);
-                            mis_figuras.get(figura).setY(gety);
-
-
+                            float cenx1 = getx - temp.getX();
+                            float ceny1 = gety - temp.getY();
+                            float distancia2 = (float) Math.sqrt(cenx1 * cenx1 + ceny1 * ceny1);
+                            if (distancia <= 40) {
+                                temp.setRadio(temp.getRadio()-(getx_pasado-getx));
+                            } else if (distancia2 <= temp.getRadio()-40) {
+                                temp.setX(temp.getX()-(getx_pasado-getx));
+                                temp.setY(temp.getY()-(gety_pasado-gety));
+                            }
                         } else if (mis_figuras.get(figura) instanceof Rectangulo) {
                             Rectangulo aux = (Rectangulo) mis_figuras.get(figura);
                             //implementado SECCION DE REDIX
@@ -345,9 +429,11 @@ public class MainActivity extends AppCompatActivity {
                             }
                         } else if (mis_figuras.get(figura) instanceof Linea) {
                             Linea temp = (Linea) mis_figuras.get(figura);
+
                             double cenx = getx - temp.getX();
                             double ceny = gety - temp.getY();
                             float distancia = (float) Math.sqrt(cenx * cenx + ceny * ceny);
+
                             double cenx1 = getx - temp.getFinX();
                             double ceny1 = gety - temp.getFinY();
 
@@ -407,18 +493,51 @@ public class MainActivity extends AppCompatActivity {
                                 aux.setY(gety + ancho);
                             }
                             //add canvas
-                        } else {
+                        } else {File file;
                             System.out.println("TIPO NO RECONOCIDO");
                         }
 
 
                     }
-                    invalidate();
 
+                    getx_pasado=getx;
+                    gety_pasado=gety;
+                    invalidate();
                 }
             return true;
             }
 
+        }
+        public void crear_archivo_json(){
+            String file_path= (Environment.getExternalStorageDirectory() +  carpeta );
+            File localFile = new File(file_path);
+
+            if(!localFile.exists()){
+                localFile.mkdir();
+                System.out.println("hollaaaa");
+            }
+            this.file = new File(localFile,archivo);
+            try{
+                file.createNewFile();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
+        public void escribir_archivo_json(){
+            FileWriter fileWriter=null;
+            PrintWriter printWriter = null;
+            try{
+                fileWriter = new FileWriter(file);
+                printWriter = new PrintWriter(fileWriter);
+                printWriter.print(lista_figura.toString());
+                printWriter.flush();
+                printWriter.close();
+            }catch (Exception e){
+
+            }
         }
 /*
     public void readJson() {

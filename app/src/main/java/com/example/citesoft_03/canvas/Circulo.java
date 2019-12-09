@@ -2,10 +2,10 @@ package com.example.citesoft_03.canvas;
 
 import android.graphics.Paint;
 
-public class Circulo extends Figura{
+public class Circulo extends Figura {
     private float radio;
-    public Circulo(float _x, float _y, float _radio , Paint _paint){
-        super(_x,_y,_paint);
+    public Circulo(float _x, float _y, float _radio , Paint _paint,int color[]){
+        super(_x,_y,_paint,color);
         this.radio = _radio;
 
     }
@@ -15,11 +15,9 @@ public class Circulo extends Figura{
     public float getRadio(){
         return this.radio;
     }
-    @Override
+
+
     public String toString(){
-        return "{\n \"radio\": "+this.radio+",\n" +
-                "   \"name\": c,\n"+
-                "   \"x\": "+this.x+",\n"+
-                "    \"y\": "+this.y+"\n }";
+        return "{\"id\":1,\"x\"="+this.getX()+",\"y\"="+this.getY()+",\"r\"="+this.getRadio()+"}" ;
     }
 }

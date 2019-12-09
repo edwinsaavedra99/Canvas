@@ -8,9 +8,8 @@
 
     <LinearLayout
         android:id="@+id/img"
-        android:layout_width="324dp"
-        android:layout_height="547dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="315dp"
+        android:layout_height="514dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
@@ -18,10 +17,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.276"
+        app:layout_constraintStart_toEndOf="@+id/paleta_blue"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.212"></LinearLayout>
+        app:layout_constraintVertical_bias="0.206"></LinearLayout>
 
     <Button
         android:id="@+id/button_circle"
@@ -94,8 +93,8 @@
 
     <Button
         android:id="@+id/paleta_blue"
-        android:layout_width="86dp"
-        android:layout_height="47dp"
+        android:layout_width="42dp"
+        android:layout_height="32dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -104,15 +103,15 @@
         android:text="blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888" />
+        app:layout_constraintVertical_bias="0.421" />
 
     <Button
         android:id="@+id/paleta_green"
-        android:layout_width="86dp"
-        android:layout_height="47dp"
+        android:layout_width="46dp"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -121,15 +120,15 @@
         android:text="Verde"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.361"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888" />
+        app:layout_constraintVertical_bias="0.497" />
 
     <Button
         android:id="@+id/paleta_red"
-        android:layout_width="86dp"
-        android:layout_height="47dp"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -138,15 +137,15 @@
         android:text="Red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.644"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888" />
+        app:layout_constraintVertical_bias="0.565" />
 
     <Button
         android:id="@+id/paleta_celeste"
-        android:layout_width="86dp"
-        android:layout_height="47dp"
+        android:layout_width="47dp"
+        android:layout_height="43dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -155,9 +154,29 @@
         android:text="Celeste"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.907"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888" />
+        app:layout_constraintVertical_bias="0.64" />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="82dp"
+        android:layout_height="39dp"
+        android:text="save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.221"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.851" />
+
+    <Button
+        android:id="@+id/button_load"
+        android:layout_width="83dp"
+        android:layout_height="45dp"
+        android:text="load"
+        tools:layout_editor_absoluteX="237dp"
+        tools:layout_editor_absoluteY="589dp" />
 
 </android.support.constraint.ConstraintLayout>
